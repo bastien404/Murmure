@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>Chat chiffré sans inscription · Murmure (E2E AES-256)</title>
+
+<!-- SEO -->
+<meta name="description" content="Messagerie web chiffrée de bout en bout entre 2 personnes. AES-256, sans compte, sans pub. Le serveur ne lit rien. Gratuit, accessible en 1 clic." />
+<meta name="keywords" content="chat chiffré, messagerie privée, end-to-end, E2EE, AES-256, PBKDF2, chiffrement bout en bout, chat anonyme, conversation privée, sans inscription, alternative signal, chat sans téléphone, vie privée, communication sécurisée" />
+<meta name="author" content="Bastien Brousse" />
+<meta name="application-name" content="Murmure" />
+<meta name="robots" content="index, follow, max-image-preview:large" />
+<meta name="theme-color" content="#7c5cff" />
+<link rel="canonical" href="https://chat.bastienbrousse.pro/" />
+<link rel="alternate" hreflang="fr" href="https://chat.bastienbrousse.pro/" />
+<link rel="alternate" hreflang="x-default" href="https://chat.bastienbrousse.pro/" />
+
+<!-- Perf : préconnexions -->
+<link rel="preconnect" href="https://challenges.cloudflare.com" crossorigin />
+<link rel="dns-prefetch" href="https://challenges.cloudflare.com" />
+<link rel="preconnect" href="https://api.giphy.com" crossorigin />
+<link rel="dns-prefetch" href="https://media.giphy.com" />
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Murmure" />
+<meta property="og:title" content="Murmure · Chat chiffré de bout en bout" />
+<meta property="og:description" content="Messagerie privée à deux, chiffrée AES-256-GCM. Le serveur ne déchiffre rien. Sans inscription." />
+<meta property="og:url" content="https://chat.bastienbrousse.pro/" />
+<meta property="og:locale" content="fr_FR" />
+<meta property="og:image" content="https://chat.bastienbrousse.pro/android-chrome-512x512.png" />
+<meta property="og:image:width" content="512" />
+<meta property="og:image:height" content="512" />
+<meta property="og:image:alt" content="Logo Murmure" />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Murmure · Chat chiffré de bout en bout" />
+<meta name="twitter:description" content="Messagerie privée à deux, chiffrée AES-256-GCM. Sans inscription." />
+<meta name="twitter:image" content="https://chat.bastienbrousse.pro/android-chrome-512x512.png" />
+
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="stylesheet" href="style.css" />
+
+<!-- JSON-LD structured data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["WebApplication", "SoftwareApplication"],
+      "name": "Murmure",
+      "alternateName": "Murmure Chat",
+      "url": "https://chat.bastienbrousse.pro/",
+      "description": "Messagerie privée à deux, chiffrée de bout en bout en AES-256-GCM avec clé dérivée par PBKDF2-SHA256 (250 000 itérations). Sans inscription, sans collecte de données.",
+      "applicationCategory": "CommunicationApplication",
+      "applicationSubCategory": "Secure Messaging",
+      "operatingSystem": "Web (tout navigateur moderne)",
+      "browserRequirements": "Requires JavaScript, WebCrypto API, WebSocket",
+      "inLanguage": "fr",
+      "isAccessibleForFree": true,
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      },
+      "featureList": [
+        "Chiffrement de bout en bout AES-256-GCM",
+        "Clé dérivée par PBKDF2 (250 000 itérations SHA-256)",
+        "Empreinte cryptographique vérifiable",
+        "Salons à 2 personnes",
+        "Réactions emoji illimitées",
+        "Partage d'images chiffrées",
+        "Bibliothèque GIF intégrée",
+        "Aperçus de liens (Open Graph)",
+        "Notifications push d'appel",
+        "Captcha Cloudflare Turnstile",
+        "Rate-limit par IP",
+        "Sans inscription ni compte",
+        "Sans publicité, sans tracking"
+      ],
+      "creator": {
+        "@type": "Person",
+        "name": "Bastien Brousse",
+        "url": "https://os.bastienbrousse.pro"
+      },
+      "publisher": {
+        "@type": "Person",
+        "name": "Bastien Brousse"
+      },
+      "screenshot": "https://chat.bastienbrousse.pro/android-chrome-512x512.png"
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Comment fonctionne le chiffrement de Murmure ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Le code secret partagé est transformé localement en clé AES-256-GCM via PBKDF2-SHA256 avec 250 000 itérations. Le code n'est jamais envoyé au serveur ; seul un hash SHA-256 sert d'identifiant de salon. Le serveur ne relaie que du texte chiffré qu'il ne peut pas déchiffrer."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Faut-il créer un compte pour utiliser Murmure ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Non. Aucun compte n'est requis. Tu choisis un pseudo temporaire optionnel et un code secret partagé avec ton interlocuteur. Aucune donnée personnelle n'est collectée."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Le serveur peut-il lire mes messages ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Non. Le chiffrement et le déchiffrement se font entièrement dans ton navigateur via la WebCrypto API. Le serveur n'a jamais accès au code secret ni à la clé dérivée, et stocke uniquement du ciphertext."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Combien de personnes peuvent rejoindre un salon ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Un salon est conçu pour deux personnes. Toute personne disposant du code peut s'y connecter, jusqu'à 5 connexions simultanées maximum côté serveur."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Combien de temps les messages sont-ils conservés ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "L'historique chiffré est conservé 6 heures côté serveur puis purgé automatiquement. Même pendant cette période, le serveur ne peut pas lire les messages."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Comment partager le code secret en toute sécurité ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Partage le code par un canal de confiance distinct : en personne, par appel téléphonique, ou via une application déjà chiffrée comme Signal. Évite SMS et email non chiffrés."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body class="landing">
+<canvas id="bg"></canvas>
+
+<section class="hero">
+<main class="card">
+  <div class="orb"><div class="orb-inner"></div></div>
+  <h1>Murmure</h1>
+  <p class="sub">Deux voix. Un code. Chiffré de bout en bout.</p>
+
+  <form id="join" autocomplete="off">
+    <label for="pseudo">Ton pseudo (optionnel)</label>
+    <input id="pseudo" name="pseudo" type="text" maxlength="32"
+           placeholder="Anonyme" spellcheck="false" autocomplete="off" />
+
+    <label for="code" style="margin-top:14px;display:block">Code secret partagé</label>
+    <div class="code-row">
+      <input id="code" name="code" type="password" inputmode="text"
+             minlength="4" maxlength="128" required
+             placeholder="Ex.: orage-bleu-42" spellcheck="false" />
+      <button type="button" id="reveal" title="Afficher / masquer">👁</button>
+    </div>
+
+    <div class="captcha-block">
+      <label>Vérification anti-robot</label>
+      <div id="turnstile-container" class="turnstile-container"></div>
+      <p id="captcha-status" class="captcha-status">Chargement…</p>
+    </div>
+
+    <div class="actions">
+      <button type="button" id="generate" class="ghost">Générer un code</button>
+      <button type="submit" class="primary">Entrer</button>
+    </div>
+
+    <p id="err" class="err" role="alert"></p>
+  </form>
+
+  <details class="info">
+    <summary>Comment ça marche ?</summary>
+    <ul>
+      <li>Le code n'est <b>jamais</b> envoyé au serveur.</li>
+      <li>Il dérive une clé AES-256-GCM (PBKDF2, 250 000 itérations).</li>
+      <li>Le serveur ne relaie que du texte chiffré.</li>
+      <li>Partage le code par un canal de confiance (en personne, signal…).</li>
+    </ul>
+  </details>
+</main>
+<a href="#about" class="scroll-cue" aria-label="En savoir plus">▾</a>
+</section>
+
+<article id="about" class="seo-content" aria-label="À propos de Murmure">
+  <header>
+    <h2>Murmure : la messagerie privée chiffrée de bout en bout</h2>
+    <p class="lead">
+      Murmure est une messagerie web qui permet à <strong>deux personnes</strong> d'échanger
+      des messages, des images et des GIFs à travers un canal <strong>chiffré de bout en bout</strong>.
+      Aucun compte, aucune adresse email, aucune donnée personnelle : seul un <em>code secret partagé</em>
+      sert à dériver la clé cryptographique. Le serveur ne voit que du texte chiffré qu'il ne
+      peut techniquement pas déchiffrer.
+    </p>
+  </header>
+
+  <section>
+    <h3>Une cryptographie standard, auditable</h3>
+    <p>
+      Les messages sont chiffrés dans ton navigateur via l'API <strong>WebCrypto</strong>
+      avec l'algorithme <strong>AES-256 en mode GCM</strong>, considéré comme l'état de l'art
+      en chiffrement symétrique authentifié. La clé est dérivée du code secret par
+      <strong>PBKDF2-SHA256</strong> avec <strong>250 000 itérations</strong>, ce qui ralentit
+      considérablement toute tentative d'attaque par force brute. Une empreinte cryptographique
+      affichée en haut du salon permet de <em>vérifier visuellement</em> que les deux côtés
+      utilisent bien la même clé.
+    </p>
+  </section>
+
+  <section>
+    <h3>Pourquoi choisir Murmure ?</h3>
+    <ul class="feat">
+      <li><strong>Zéro inscription :</strong> pas de compte, pas d'email, pas de numéro de téléphone.</li>
+      <li><strong>Zéro publicité :</strong> aucun script de tracking, aucun analytics commercial.</li>
+      <li><strong>Code source minimal :</strong> dépendances réduites, comportement explicite.</li>
+      <li><strong>Réactions emoji illimitées :</strong> plusieurs réactions par utilisateur sur un même message, parmi des centaines d'emojis.</li>
+      <li><strong>Médias chiffrés :</strong> les images envoyées dans le chat sont chiffrées comme les messages texte.</li>
+      <li><strong>Bibliothèque GIF intégrée :</strong> recherche et envoi de GIFs animés via Giphy.</li>
+      <li><strong>Aperçus de liens :</strong> cartes Open Graph rendues côté serveur pour préserver ta vie privée.</li>
+      <li><strong>Notifications d'appel :</strong> ton interlocuteur peut « sonner » même si l'onglet est fermé.</li>
+      <li><strong>Protection anti-robot :</strong> Cloudflare Turnstile + rate-limit par IP côté serveur.</li>
+      <li><strong>Rétention courte :</strong> l'historique chiffré est purgé après 6 heures.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h3>Pour quel usage ?</h3>
+    <p>
+      Murmure est pensé pour les <strong>conversations privées entre deux personnes</strong> :
+      partage de codes d'accès, discussions sensibles, échange d'informations confidentielles,
+      ou simplement par souci de discrétion vis-à-vis des messageries grand public. Ce n'est
+      <em>pas</em> un remplacement à Signal pour une utilisation quotidienne longue durée,
+      mais un outil <strong>léger, sans friction</strong>, accessible depuis n'importe quel
+      navigateur en quelques secondes.
+    </p>
+  </section>
+
+  <footer class="seo-footer">
+    <p>
+      Projet open-spirit développé par <a href="https://os.bastienbrousse.pro" rel="author">Bastien Brousse</a>.
+      Hébergé sur infrastructure personnelle, sans tiers analytique ni publicitaire.
+    </p>
+  </footer>
+</article>
+
+<div class="seo-divider" aria-hidden="true"></div>
+
+<article class="seo-content faq-section" aria-label="Questions fréquentes">
+  <header>
+    <h2>Questions fréquentes</h2>
+    <p class="lead">Tout ce qu'il faut savoir avant de commencer une conversation chiffrée sur Murmure.</p>
+  </header>
+
+  <dl class="faq">
+    <dt>Le serveur peut-il lire mes messages ?</dt>
+    <dd>Non. Le chiffrement et le déchiffrement se font intégralement dans ton navigateur.
+      Le serveur reçoit uniquement le couple <code>{ iv, ct }</code> chiffré et n'a aucun
+      accès à la clé.</dd>
+
+    <dt>Que se passe-t-il si je perds le code ?</dt>
+    <dd>Sans le code secret, les messages chiffrés deviennent <strong>illisibles à jamais</strong>.
+      C'est le prix du chiffrement de bout en bout : il n'existe aucun mécanisme de récupération
+      et c'est exactement ce qui garantit ta confidentialité.</dd>
+
+    <dt>Combien de temps les messages sont-ils conservés ?</dt>
+    <dd>L'historique chiffré reste 6 heures côté serveur puis est automatiquement purgé.
+      Même pendant cette fenêtre, il reste illisible sans le code.</dd>
+
+    <dt>Comment partager le code en toute sécurité ?</dt>
+    <dd>Utilise un canal de confiance distinct : en personne, par appel vocal, ou via
+      une application déjà chiffrée comme Signal. Évite SMS, email non chiffré et réseaux sociaux.</dd>
+
+    <dt>Le site fonctionne-t-il sur mobile ?</dt>
+    <dd>Oui. L'interface est responsive et s'installe en tant qu'application web progressive
+      (PWA) via le manifeste fourni. Notifications push supportées sur navigateurs compatibles.</dd>
+
+    <dt>Faut-il créer un compte ?</dt>
+    <dd>Non. Aucune inscription, aucun email, aucun numéro de téléphone. Tu choisis un
+      pseudo temporaire optionnel et un code partagé avec ton interlocuteur.</dd>
+  </dl>
+</article>
+
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+<script src="landing.js"></script>
+</body>
+</html>

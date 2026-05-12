@@ -1,0 +1,32 @@
+{
+  "name": "murmure",
+  "version": "1.0.0",
+  "description": "Messagerie web chiffrée de bout en bout (AES-256-GCM) entre deux personnes. Sans inscription, sans pub, sans tracking.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "chat",
+    "e2ee",
+    "end-to-end-encryption",
+    "aes-256-gcm",
+    "pbkdf2",
+    "webcrypto",
+    "socket.io",
+    "privacy",
+    "encrypted-messaging"
+  ],
+  "author": "Bastien Brousse <https://os.bastienbrousse.pro>",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^4.19.2",
+    "socket.io": "^4.7.5",
+    "web-push": "^3.6.7"
+  }
+}

@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /chat.html
+Disallow: /api/
+Disallow: /socket.io/
+
+Sitemap: https://chat.bastienbrousse.pro/sitemap.xml
