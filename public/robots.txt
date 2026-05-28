@@ -4,4 +4,14 @@ Disallow: /chat.html
 Disallow: /api/
 Disallow: /socket.io/
 
+# Bots IA — autorisés (signal de confiance / E-E-A-T)
+User-agent: GPTBot
+Allow: /
+User-agent: ClaudeBot
+Allow: /
+User-agent: anthropic-ai
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+
 Sitemap: https://chat.bastienbrousse.pro/sitemap.xml

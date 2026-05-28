@@ -18,7 +18,7 @@
     "privacy",
     "encrypted-messaging"
   ],
-  "author": "Bastien Brousse <https://os.bastienbrousse.pro>",
+  "author": "Bastien Brousse <https://bastienbrousse.pro>",
   "license": "MIT",
   "engines": {
     "node": ">=18"

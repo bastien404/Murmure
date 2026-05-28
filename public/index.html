@@ -87,13 +87,48 @@
       "creator": {
         "@type": "Person",
         "name": "Bastien Brousse",
-        "url": "https://os.bastienbrousse.pro"
+        "url": "https://bastienbrousse.pro"
       },
       "publisher": {
         "@type": "Person",
         "name": "Bastien Brousse"
       },
       "screenshot": "https://chat.bastienbrousse.pro/android-chrome-512x512.png"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Accueil",
+          "item": "https://chat.bastienbrousse.pro/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "À propos",
+          "item": "https://chat.bastienbrousse.pro/#about"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "FAQ",
+          "item": "https://chat.bastienbrousse.pro/#faq"
+        }
+      ]
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://chat.bastienbrousse.pro/#organization",
+      "name": "Murmure",
+      "url": "https://chat.bastienbrousse.pro/",
+      "logo": "https://chat.bastienbrousse.pro/android-chrome-512x512.png",
+      "founder": {
+        "@type": "Person",
+        "name": "Bastien Brousse",
+        "url": "https://bastienbrousse.pro"
+      }
     },
     {
       "@type": "FAQPage",
@@ -158,7 +193,7 @@
 <section class="hero">
 <main class="card">
   <div class="orb"><div class="orb-inner"></div></div>
-  <h1>Murmure</h1>
+  <h1>Murmure <span class="h1-tag">— chat chiffré sans inscription</span></h1>
   <p class="sub">Deux voix. Un code. Chiffré de bout en bout.</p>
 
   <form id="join" autocomplete="off">
@@ -254,17 +289,28 @@
     </p>
   </section>
 
+  <nav class="seo-links" aria-label="Pages liées">
+    <h3>En savoir plus</h3>
+    <ul>
+      <li><a href="/alternative-signal.html">Murmure vs Signal — alternative sans téléphone</a></li>
+      <li><a href="/chiffrement-bout-en-bout-explication.html">Le chiffrement de bout en bout, expliqué simplement</a></li>
+      <li><a href="/comparaison-messageries-chiffrees.html">Comparatif des messageries chiffrées</a></li>
+      <li><a href="/comment-partager-mot-de-passe.html">Comment partager un mot de passe sans risque</a></li>
+    </ul>
+  </nav>
+
   <footer class="seo-footer">
     <p>
-      Projet open-spirit développé par <a href="https://os.bastienbrousse.pro" rel="author">Bastien Brousse</a>.
+      Projet open-spirit développé par <a href="https://bastienbrousse.pro/" rel="author">Bastien Brousse</a>.
       Hébergé sur infrastructure personnelle, sans tiers analytique ni publicitaire.
+      Découvrez mes autres projets sur <a href="https://bastienbrousse.pro/">bastienbrousse.pro</a>.
     </p>
   </footer>
 </article>
 
 <div class="seo-divider" aria-hidden="true"></div>
 
-<article class="seo-content faq-section" aria-label="Questions fréquentes">
+<article id="faq" class="seo-content faq-section" aria-label="Questions fréquentes">
   <header>
     <h2>Questions fréquentes</h2>
     <p class="lead">Tout ce qu'il faut savoir avant de commencer une conversation chiffrée sur Murmure.</p>

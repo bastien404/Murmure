@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>Comment partager un mot de passe sans risque (guide pratique 2026)</title>
+
+<meta name="description" content="SMS, email, Slack : tous mauvais. Comment partager un mot de passe en sécurité ? Méthodes éprouvées, outils chiffrés, bonnes pratiques pour particuliers et pros." />
+<meta name="keywords" content="partager mot de passe, envoyer mot de passe sécurité, transmettre password, outil partage mdp chiffré, comment envoyer mot de passe sans risque, sécuriser partage credentials" />
+<meta name="author" content="Bastien Brousse" />
+<meta name="robots" content="index, follow, max-image-preview:large" />
+<meta name="theme-color" content="#7c5cff" />
+<link rel="canonical" href="https://chat.bastienbrousse.pro/comment-partager-mot-de-passe.html" />
+<link rel="alternate" hreflang="fr" href="https://chat.bastienbrousse.pro/comment-partager-mot-de-passe.html" />
+
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="Murmure" />
+<meta property="og:title" content="Comment partager un mot de passe sans risque" />
+<meta property="og:description" content="SMS, email, Slack : tous mauvais. Méthodes éprouvées pour transmettre un mot de passe en sécurité." />
+<meta property="og:url" content="https://chat.bastienbrousse.pro/comment-partager-mot-de-passe.html" />
+<meta property="og:locale" content="fr_FR" />
+<meta property="og:image" content="https://chat.bastienbrousse.pro/android-chrome-512x512.png" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Comment partager un mot de passe sans risque" />
+<meta name="twitter:description" content="Guide pratique des bonnes pratiques de partage de credentials." />
+<meta name="twitter:image" content="https://chat.bastienbrousse.pro/android-chrome-512x512.png" />
+
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="stylesheet" href="style.css" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "HowTo",
+      "name": "Partager un mot de passe sans risque",
+      "description": "Guide étape par étape pour transmettre un identifiant ou mot de passe sans qu'il soit interceptable.",
+      "totalTime": "PT2M",
+      "step": [
+        { "@type": "HowToStep", "name": "Choisir un canal chiffré de bout en bout", "text": "Signal, Murmure ou un gestionnaire de mots de passe avec partage chiffré." },
+        { "@type": "HowToStep", "name": "Partager les deux moitiés sur deux canaux séparés", "text": "Identifiant via email, mot de passe via Signal ou téléphone vocal. Un attaquant sur un seul canal ne reconstitue rien." },
+        { "@type": "HowToStep", "name": "Utiliser un lien éphémère auto-destructeur", "text": "Murmure, Yopass, ou un partage chiffré 1Password/Bitwarden : le secret disparaît après lecture." },
+        { "@type": "HowToStep", "name": "Demander un changement immédiat", "text": "Le destinataire change le mot de passe dès qu'il l'a reçu, surtout si le canal n'était pas idéal." }
+      ],
+      "inLanguage": "fr"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://chat.bastienbrousse.pro/" },
+        { "@type": "ListItem", "position": 2, "name": "Partager un mot de passe", "item": "https://chat.bastienbrousse.pro/comment-partager-mot-de-passe.html" }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body class="landing article-page">
+<canvas id="bg"></canvas>
+
+<nav class="article-nav"><a href="/">← Retour à Murmure</a></nav>
+
+<article class="seo-content article-main">
+  <header>
+    <h1>Comment partager un mot de passe sans risque</h1>
+    <p class="lead">
+      Envoyer un mot de passe à un collègue, un client, un membre de ta famille : la pratique
+      est tellement banale qu'on ne réfléchit plus aux risques. Pourtant, <strong>SMS,
+      email, Slack et même WhatsApp ne sont pas adaptés</strong>. Voici un guide concret pour
+      transmettre un mot de passe ou n'importe quel secret sans qu'il finisse dans une fuite
+      de données.
+    </p>
+  </header>
+
+  <section>
+    <h2>Ce qu'il ne faut surtout PAS faire</h2>
+    <ul>
+      <li><strong>SMS</strong> — stocké en clair chez ton opérateur, sauvegardé sur iCloud/Google, lisible
+        si quelqu'un ouvre ton téléphone. Aucun chiffrement de bout en bout.</li>
+      <li><strong>Email classique</strong> — passe par plusieurs serveurs, indexé par Gmail/Outlook,
+        archivé indéfiniment. Une fuite Google = ton mot de passe public.</li>
+      <li><strong>Slack, Teams, Discord</strong> — l'admin de l'espace de travail peut le voir, les
+        logs sont conservés des années, les sauvegardes le sont aussi.</li>
+      <li><strong>Post-it sur l'écran</strong> — classique mais redoutable, surtout en open space.</li>
+      <li><strong>Document partagé Google Drive / Dropbox</strong> — chiffré en transit, mais lisible
+        par le fournisseur et par toute personne ayant le lien.</li>
+      <li><strong>WhatsApp avec sauvegarde cloud activée</strong> — la sauvegarde casse le E2EE
+        chez Google/Apple.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Les bonnes méthodes par ordre de robustesse</h2>
+
+    <h3>1. Gestionnaire de mots de passe avec partage chiffré</h3>
+    <p>
+      Si les deux personnes utilisent <strong>1Password</strong>, <strong>Bitwarden</strong>,
+      <strong>Dashlane</strong> ou <strong>Proton Pass</strong>, ces outils proposent un partage
+      chiffré direct. C'est la <strong>méthode la plus propre</strong> : le secret reste dans
+      le coffre, jamais en clair dans un message, accès révocable, traçabilité.
+    </p>
+    <p>
+      Limite : il faut que les deux côtés aient le même outil ou un compte compatible.
+    </p>
+
+    <h3>2. Messagerie chiffrée de bout en bout</h3>
+    <p>
+      <strong>Signal</strong> ou <strong>Olvid</strong> sont parfaits pour les conversations
+      durables. Active la <em>disparition automatique</em> des messages (5 minutes à 1 semaine)
+      pour que le mot de passe ne traîne pas dans l'historique. Le destinataire copie le mot de
+      passe dans son gestionnaire dès réception puis supprime le message.
+    </p>
+
+    <h3>3. Lien éphémère à usage unique</h3>
+    <p>
+      Pour un <strong>partage ponctuel</strong> avec quelqu'un qui n'utilise pas le même outil
+      que toi, un lien éphémère chiffré est la solution la plus simple :
+    </p>
+    <ul>
+      <li><a href="/">Murmure</a> — chat web chiffré E2E à deux, accessible en un lien, historique purgé en 6h. Idéal pour partager un mot de passe + recevoir confirmation.</li>
+      <li><strong>Yopass</strong>, <strong>PrivateBin</strong>, <strong>OnionShare</strong> — partage de note auto-détruite après lecture.</li>
+      <li><strong>1Password Share / Bitwarden Send</strong> — fonctionne même si le destinataire n'a pas de compte.</li>
+    </ul>
+
+    <h3>4. Téléphone vocal (oui, le téléphone)</h3>
+    <p>
+      Sous-estimé : appeler la personne et lui <strong>épeler le mot de passe à l'oral</strong>
+      est étonnamment sûr — pas de trace écrite, pas de cache, pas de fuite serveur. Les écoutes
+      téléphoniques existent mais visent rarement le particulier moyen. À combiner avec un mot
+      de passe qui sera changé peu après.
+    </p>
+
+    <h3>5. Canal hors-bande (en personne, papier)</h3>
+    <p>
+      Si la personne est physiquement à côté de toi : montre-lui l'écran, ne tape rien. Si c'est
+      pour un mot de passe critique (clé de chiffrement maître, code de coffre), <strong>papier
+      remis en main propre puis détruit</strong> reste imbattable.
+    </p>
+  </section>
+
+  <section>
+    <h2>La technique du « secret coupé en deux »</h2>
+    <p>
+      Pour les credentials sensibles, sépare l'identifiant et le mot de passe sur
+      <strong>deux canaux différents</strong> :
+    </p>
+    <ul>
+      <li>Identifiant par email professionnel</li>
+      <li>Mot de passe par Signal ou Murmure</li>
+    </ul>
+    <p>
+      Un attaquant qui compromet un seul canal n'a pas le couple complet. C'est la même logique
+      que la double authentification : on multiplie les barrières pour réduire le risque qu'une
+      seule compromission suffise.
+    </p>
+  </section>
+
+  <section>
+    <h2>Bonnes pratiques après le partage</h2>
+    <ol>
+      <li><strong>Changement immédiat</strong> — pour un mot de passe destiné à être utilisé
+        durablement, le destinataire le change dès la première connexion. Le secret transmis
+        devient obsolète.</li>
+      <li><strong>Pas de réutilisation</strong> — un mot de passe transmis est plus exposé qu'un
+        mot de passe choisi seul. Ne le réutilise jamais ailleurs.</li>
+      <li><strong>Vérification d'identité</strong> — si le canal est asynchrone (email,
+        messagerie), confirme oralement ou via un canal séparé que le destinataire est bien le
+        bon. Le phishing existe.</li>
+      <li><strong>Suppression de l'historique</strong> — efface le message dès que possible des
+        deux côtés. Avec Murmure, attends 6h, le serveur s'en charge.</li>
+      <li><strong>Audit</strong> — si le mot de passe protège quelque chose de critique, vérifie
+        les logs d'accès dans les jours qui suivent.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Cas concrets</h2>
+    <h3>Donner le Wi-Fi à un invité</h3>
+    <p>
+      Le réseau invité séparé est la bonne pratique. Sinon, partage le mot de passe via un QR
+      code (la plupart des téléphones le génèrent depuis les paramètres Wi-Fi). Évite de
+      l'écrire dans un message qui restera.
+    </p>
+
+    <h3>Transmettre l'accès à un compte pro à un nouveau collègue</h3>
+    <p>
+      Gestionnaire d'entreprise (1Password Business, Bitwarden Organization) avec partage
+      d'équipe, jamais en direct. Sinon, lien éphémère + changement immédiat à la première
+      connexion.
+    </p>
+
+    <h3>Donner ton code bancaire ou un secret familial</h3>
+    <p>
+      <a href="/">Murmure</a>, Signal avec disparition, ou téléphone vocal. Évite absolument
+      l'email et le SMS. Préfère un canal qui purge l'historique automatiquement.
+    </p>
+  </section>
+
+  <section>
+    <h2>Résumé</h2>
+    <ul>
+      <li>❌ SMS, email, Slack, Drive partagé, Post-it</li>
+      <li>✅ Gestionnaire de mots de passe avec partage chiffré</li>
+      <li>✅ Signal ou Olvid avec disparition activée</li>
+      <li>✅ Lien éphémère (<a href="/">Murmure</a>, Yopass, 1Password Share)</li>
+      <li>✅ Vocal au téléphone, en personne</li>
+      <li>🔑 Toujours suivi d'un changement immédiat pour les credentials durables</li>
+    </ul>
+  </section>
+
+  <nav class="seo-links">
+    <h3>Pour aller plus loin</h3>
+    <ul>
+      <li><a href="/chiffrement-bout-en-bout-explication.html">Le chiffrement de bout en bout, expliqué simplement</a></li>
+      <li><a href="/comparaison-messageries-chiffrees.html">Comparatif des messageries chiffrées</a></li>
+      <li><a href="/alternative-signal.html">Alternative à Signal sans téléphone</a></li>
+      <li><a href="/">Ouvrir un salon Murmure</a></li>
+      <li><a href="https://bastienbrousse.pro/">Tous les projets de Bastien Brousse</a></li>
+    </ul>
+  </nav>
+
+  <footer class="seo-footer">
+    <p>Projet développé par <a href="https://bastienbrousse.pro/" rel="author">Bastien Brousse</a> — <a href="https://bastienbrousse.pro/">bastienbrousse.pro</a>.</p>
+  </footer>
+</article>
+</body>
+</html>

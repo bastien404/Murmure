@@ -18,9 +18,13 @@ app.use(express.json({ limit: '1mb' }));
 app.get('/index.html', (_req, res) => res.redirect(301, '/'));
 
 app.use(express.static(path.join(__dirname, 'public'), {
+  dotfiles: 'allow', // pour servir /.well-known/security.txt
   setHeaders(res, filePath) {
     if (/\.(html|js|css)$/.test(filePath)) {
       res.setHeader('Cache-Control', 'no-cache, must-revalidate');
+    }
+    if (/security\.txt$/.test(filePath)) {
+      res.setHeader('Content-Type', 'text/plain; charset=utf-8');
     }
   }
 }));
@@ -239,6 +243,45 @@ setInterval(() => {
     if (r.sockets.size === 0 && now - r.createdAt > 10 * 60 * 1000) rooms.delete(k);
   }
 }, 60 * 1000);
+
+// ---------- IndexNow ping (Bing, Yandex, …) ----------
+const INDEXNOW_KEY = '6fc3320d14d1ad32424fc8e23fed0add';
+const INDEXNOW_HOST = 'chat.bastienbrousse.pro';
+const INDEXNOW_URLS = [
+  `https://${INDEXNOW_HOST}/`,
+  `https://${INDEXNOW_HOST}/alternative-signal.html`,
+  `https://${INDEXNOW_HOST}/chiffrement-bout-en-bout-explication.html`,
+  `https://${INDEXNOW_HOST}/comparaison-messageries-chiffrees.html`,
+  `https://${INDEXNOW_HOST}/comment-partager-mot-de-passe.html`
+];
+
+async function pingIndexNow() {
+  if (typeof fetch !== 'function') return { ok: false, error: 'no_fetch' };
+  try {
+    const r = await fetch('https://api.indexnow.org/IndexNow', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        host: INDEXNOW_HOST,
+        key: INDEXNOW_KEY,
+        keyLocation: `https://${INDEXNOW_HOST}/${INDEXNOW_KEY}.txt`,
+        urlList: INDEXNOW_URLS
+      })
+    });
+    return { ok: r.ok, status: r.status };
+  } catch (e) { return { ok: false, error: e.message }; }
+}
+
+const INDEXNOW_ADMIN_TOKEN = process.env.INDEXNOW_ADMIN_TOKEN || '';
+app.post('/api/indexnow-ping', async (req, res) => {
+  if (!INDEXNOW_ADMIN_TOKEN) return res.status(403).json({ ok: false, error: 'admin_token_disabled' });
+  if ((req.headers['x-admin-token'] || '') !== INDEXNOW_ADMIN_TOKEN) {
+    return res.status(401).json({ ok: false, error: 'unauthorized' });
+  }
+  const r = await pingIndexNow();
+  console.log('[indexnow] ping result', r);
+  res.json(r);
+});
 
 // ---------- VAPID public key ----------
 app.get('/api/vapid', (_req, res) => {

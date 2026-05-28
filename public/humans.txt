@@ -1,0 +1,15 @@
+/* TEAM */
+Développeur : Bastien Brousse
+Site : https://bastienbrousse.pro
+Localisation : France
+
+/* SITE */
+Dernière mise à jour : 2026-05-12
+Langage : Français
+Doctype : HTML5
+Stack : Node.js, Express, Socket.io, WebCrypto API
+Licence : MIT
+Source : https://github.com/
+
+/* THANKS */
+Cloudflare Turnstile, Giphy, Express, Socket.io

@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>Chiffrement de bout en bout : expliqué simplement (E2EE)</title>
+
+<meta name="description" content="Comment fonctionne le chiffrement de bout en bout (E2EE) ? AES-256, PBKDF2, échange de clés : guide vulgarisé sans jargon. Tout ce qu'il faut savoir." />
+<meta name="keywords" content="chiffrement bout en bout, E2EE explication, comment fonctionne chiffrement, AES-256 vulgarisation, PBKDF2 expliqué, cryptographie débutant, end-to-end encryption français" />
+<meta name="author" content="Bastien Brousse" />
+<meta name="robots" content="index, follow, max-image-preview:large" />
+<meta name="theme-color" content="#7c5cff" />
+<link rel="canonical" href="https://chat.bastienbrousse.pro/chiffrement-bout-en-bout-explication.html" />
+<link rel="alternate" hreflang="fr" href="https://chat.bastienbrousse.pro/chiffrement-bout-en-bout-explication.html" />
+
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="Murmure" />
+<meta property="og:title" content="Chiffrement de bout en bout : expliqué simplement" />
+<meta property="og:description" content="Comment fonctionne le E2EE ? AES-256, PBKDF2, échange de clés : guide vulgarisé sans jargon." />
+<meta property="og:url" content="https://chat.bastienbrousse.pro/chiffrement-bout-en-bout-explication.html" />
+<meta property="og:locale" content="fr_FR" />
+<meta property="og:image" content="https://chat.bastienbrousse.pro/android-chrome-512x512.png" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Chiffrement de bout en bout : expliqué simplement" />
+<meta name="twitter:description" content="Guide vulgarisé du E2EE : AES-256, PBKDF2, principes de base." />
+<meta name="twitter:image" content="https://chat.bastienbrousse.pro/android-chrome-512x512.png" />
+
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="stylesheet" href="style.css" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": "Chiffrement de bout en bout : expliqué simplement",
+      "description": "Guide vulgarisé du chiffrement de bout en bout, des algorithmes AES-256 et PBKDF2, et des principes de la cryptographie moderne.",
+      "author": { "@type": "Person", "name": "Bastien Brousse", "url": "https://bastienbrousse.pro" },
+      "publisher": { "@type": "Person", "name": "Bastien Brousse" },
+      "datePublished": "2026-05-12",
+      "dateModified": "2026-05-12",
+      "inLanguage": "fr",
+      "mainEntityOfPage": "https://chat.bastienbrousse.pro/chiffrement-bout-en-bout-explication.html",
+      "image": "https://chat.bastienbrousse.pro/android-chrome-512x512.png",
+      "wordCount": 1600
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://chat.bastienbrousse.pro/" },
+        { "@type": "ListItem", "position": 2, "name": "Chiffrement E2E expliqué", "item": "https://chat.bastienbrousse.pro/chiffrement-bout-en-bout-explication.html" }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body class="landing article-page">
+<canvas id="bg"></canvas>
+
+<nav class="article-nav"><a href="/">← Retour à Murmure</a></nav>
+
+<article class="seo-content article-main">
+  <header>
+    <h1>Chiffrement de bout en bout, expliqué simplement</h1>
+    <p class="lead">
+      Le <strong>chiffrement de bout en bout</strong> (souvent abrégé <em>E2EE</em>, pour
+      <em>end-to-end encryption</em>) est devenu un standard de WhatsApp à Signal en passant
+      par iMessage. Mais qu'est-ce que ça veut dire concrètement, et pourquoi est-ce différent
+      du « simple » HTTPS ? On déroule sans jargon.
+    </p>
+  </header>
+
+  <section>
+    <h2>Le principe en une phrase</h2>
+    <p>
+      Le chiffrement de bout en bout garantit que <strong>seuls l'émetteur et le destinataire
+      peuvent lire les messages</strong>. Ni le serveur qui les transporte, ni un fournisseur
+      d'accès Internet, ni un éventuel pirate sur le réseau, ni même l'éditeur du service ne
+      peuvent les déchiffrer. La clé qui sert à brouiller les données ne quitte jamais les
+      appareils des deux interlocuteurs.
+    </p>
+  </section>
+
+  <section>
+    <h2>Comparaison avec HTTPS classique</h2>
+    <p>
+      Quand tu envoies un message WhatsApp, il fait deux trajets distincts : ton téléphone →
+      serveur Meta → téléphone du destinataire. Si seul <strong>HTTPS</strong> était utilisé,
+      le serveur déchiffrerait ton message à l'arrivée puis le re-chiffrerait pour le destinataire.
+      Concrètement : Meta verrait le contenu en clair pendant un instant. Avec le chiffrement
+      de bout en bout, ce n'est plus le cas : le message reste illisible pour le serveur,
+      qui ne sert que de relais.
+    </p>
+    <p>
+      Métaphore : HTTPS, c'est envoyer une lettre dans une enveloppe qu'un employé de la poste
+      ouvre, lit, puis remet dans une nouvelle enveloppe. E2EE, c'est utiliser un cadenas dont
+      seul ton destinataire a la clé — l'employé voit le colis mais ne peut pas l'ouvrir.
+    </p>
+  </section>
+
+  <section>
+    <h2>Comment ça marche, concrètement</h2>
+    <p>
+      Le chiffrement repose sur deux ingrédients principaux : un <strong>algorithme</strong>
+      qui transforme les données, et une <strong>clé</strong> qui pilote cette transformation.
+      Sans la clé, l'algorithme produit du bruit incompréhensible.
+    </p>
+
+    <h3>AES-256 : l'algorithme de chiffrement</h3>
+    <p>
+      <strong>AES</strong> (Advanced Encryption Standard) est l'algorithme standard de chiffrement
+      symétrique depuis 2001. Le suffixe <strong>256</strong> indique la longueur de la clé en bits.
+      Pour comparer : la NSA elle-même utilise AES-256 pour ses documents classifiés <em>Top Secret</em>.
+      Casser AES-256 par force brute exigerait plus d'énergie que celle disponible dans le
+      système solaire entier — autrement dit, ce n'est pas l'attaque que tu auras à craindre.
+    </p>
+    <p>
+      Le mode <strong>GCM</strong> (Galois/Counter Mode) qu'on associe souvent à AES ajoute une
+      vérification d'intégrité : si un attaquant modifie un seul bit du message chiffré, le
+      destinataire le détecte au moment de déchiffrer. Sans GCM (ou équivalent), le chiffrement
+      protège la confidentialité mais pas l'authenticité.
+    </p>
+
+    <h3>PBKDF2 : transformer un mot de passe en clé</h3>
+    <p>
+      Problème : AES-256 attend une clé de 256 bits parfaitement aléatoires. Un humain ne
+      mémorise pas 256 bits aléatoires — il choisit un mot de passe court. C'est là qu'intervient
+      <strong>PBKDF2</strong> (Password-Based Key Derivation Function 2). Cette fonction prend
+      ton mot de passe, le « malaxe » des centaines de milliers de fois avec une fonction de
+      hachage cryptographique (SHA-256 par exemple), et en sort une clé pseudo-aléatoire de
+      256 bits.
+    </p>
+    <p>
+      Pourquoi répéter l'opération ? Pour <strong>ralentir un attaquant</strong>. Si quelqu'un
+      tente de deviner ton mot de passe par force brute, chaque essai lui coûte le coût complet
+      du PBKDF2 — quelques centaines de millisecondes. À 250 000 itérations, tester un milliard
+      de mots de passe prendrait des décennies sur du matériel classique. C'est ce qu'on appelle
+      un <em>work factor</em>.
+    </p>
+
+    <h3>L'échange de clés (Diffie-Hellman)</h3>
+    <p>
+      Reste le problème central : comment l'émetteur et le destinataire <em>partagent</em> la
+      clé sans qu'un tiers ne l'intercepte ? Deux familles de solutions existent :
+    </p>
+    <ul>
+      <li><strong>Échange hors-bande</strong> — les deux personnes se mettent d'accord sur un
+        code secret en personne, par téléphone, ou via un canal déjà sécurisé. C'est ce que fait
+        Murmure : tu décides du code avec ton interlocuteur, chacun le tape, la clé est dérivée
+        localement.</li>
+      <li><strong>Échange Diffie-Hellman</strong> — un protocole mathématique qui permet à deux
+        parties de se mettre d'accord sur une clé secrète <em>via un canal public</em>, sans
+        qu'un observateur passif ne puisse la deviner. C'est ce que font Signal, WhatsApp et
+        iMessage à l'établissement de la conversation.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Forward Secrecy : la cerise sur le gâteau</h2>
+    <p>
+      Imagine que ton mot de passe fuite dans 10 ans. Avec une clé statique (comme dans Murmure),
+      <strong>tout ton historique chiffré devient lisible</strong>. C'est gênant. La
+      <strong>Forward Secrecy</strong> (PFS) résout ce problème : le protocole génère une nouvelle
+      clé éphémère à chaque session — ou même à chaque message dans le cas du
+      <strong>Double Ratchet</strong> de Signal. Compromettre la clé d'aujourd'hui ne donne
+      aucune information sur les messages d'hier.
+    </p>
+    <p>
+      C'est une garantie forte mais qui complexifie sérieusement le protocole. Pour une
+      messagerie ponctuelle, l'absence de PFS reste acceptable si tu changes le code régulièrement.
+    </p>
+  </section>
+
+  <section>
+    <h2>Les limites du E2EE</h2>
+    <p>
+      Le chiffrement de bout en bout protège le <strong>contenu</strong> des messages — pas
+      les <strong>métadonnées</strong>. Le serveur sait toujours :
+    </p>
+    <ul>
+      <li>Qui parle à qui (les identifiants de salon ou de compte)</li>
+      <li>À quel moment (timestamps)</li>
+      <li>Quelle taille font les messages (utile pour deviner le type : texte court vs image)</li>
+      <li>Quel appareil et quelle IP se connectent</li>
+    </ul>
+    <p>
+      Pour cacher aussi les métadonnées, il faut combiner E2EE avec d'autres techniques :
+      <strong>Sealed Sender</strong> chez Signal, <strong>onion routing</strong> chez Tor,
+      <strong>mix networks</strong>. Un E2EE seul empêche de lire ce qui se dit, mais pas
+      d'inférer un graphe social.
+    </p>
+    <p>
+      Autre limite — la plus importante : si le client lui-même est compromis (logiciel modifié,
+      téléphone infiltré, application web servie par un serveur malveillant), le E2EE devient
+      inutile. La clé est extraite avant ou après chiffrement. C'est pour cela qu'un audit du
+      code client et la reproductibilité des builds sont essentiels pour les outils sérieux.
+    </p>
+  </section>
+
+  <section>
+    <h2>Comment Murmure applique ces principes</h2>
+    <p>
+      <a href="/">Murmure</a> implémente une version minimaliste mais correcte de ces principes :
+    </p>
+    <ol>
+      <li>Tu choisis un code secret partagé avec ton interlocuteur (canal hors-bande).</li>
+      <li>Côté navigateur, <strong>PBKDF2-SHA256 avec 250 000 itérations</strong> dérive une clé AES-256 à partir du code.</li>
+      <li>Chaque message est chiffré en <strong>AES-256-GCM</strong> avec un <em>nonce</em> aléatoire de 96 bits (l'IV).</li>
+      <li>Seul le couple <code>{ iv, ct }</code> chiffré transite par le serveur, qui ne peut pas le déchiffrer.</li>
+      <li>Une <strong>empreinte cryptographique</strong> (hash du code) s'affiche des deux côtés pour vérifier que vous avez bien la même clé.</li>
+    </ol>
+    <p>
+      Pas de Forward Secrecy, pas de Double Ratchet : Murmure mise sur la simplicité et la
+      transparence. Le code est <a href="https://github.com" rel="external">open source</a>,
+      lisible en quelques centaines de lignes.
+    </p>
+  </section>
+
+  <nav class="seo-links">
+    <h3>Pour aller plus loin</h3>
+    <ul>
+      <li><a href="/alternative-signal.html">Murmure vs Signal — quand utiliser quoi</a></li>
+      <li><a href="/comparaison-messageries-chiffrees.html">Comparatif des messageries chiffrées</a></li>
+      <li><a href="/comment-partager-mot-de-passe.html">Comment partager un mot de passe sans risque</a></li>
+      <li><a href="/">Ouvrir un salon chiffré sur Murmure</a></li>
+      <li><a href="https://bastienbrousse.pro/">Tous les projets de Bastien Brousse</a></li>
+    </ul>
+  </nav>
+
+  <footer class="seo-footer">
+    <p>Projet développé par <a href="https://bastienbrousse.pro/" rel="author">Bastien Brousse</a> — <a href="https://bastienbrousse.pro/">bastienbrousse.pro</a>.</p>
+  </footer>
+</article>
+</body>
+</html>

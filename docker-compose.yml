@@ -1,0 +1,23 @@
+services:
+  murmure:
+    build: .
+    image: murmure:latest
+    container_name: murmure
+    restart: unless-stopped
+    # Variables d'environnement : créer un .env à côté de ce fichier
+    # (ou les renseigner dans l'onglet "Environment variables" de Portainer)
+    environment:
+      PORT: 2704
+      VAPID_CONTACT: ${VAPID_CONTACT:-mailto:contact@example.com}
+      GIPHY_API_KEY: ${GIPHY_API_KEY:-}
+      TURNSTILE_SITE_KEY: ${TURNSTILE_SITE_KEY:-}
+      TURNSTILE_SECRET_KEY: ${TURNSTILE_SECRET_KEY:-}
+      INDEXNOW_ADMIN_TOKEN: ${INDEXNOW_ADMIN_TOKEN:-}
+    ports:
+      - "${HOST_PORT:-2704}:2704"
+    volumes:
+      # Persiste vapid.json, subscriptions.json, pass-secret et les salons
+      - murmure-data:/app/data
+
+volumes:
+  murmure-data:
